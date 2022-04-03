@@ -2,6 +2,7 @@ import requests
 import os
 import json
 import pyodbc
+import schedule_algo
 
 from dotenv import load_dotenv
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
@@ -38,6 +39,9 @@ def user_info():
             cursor.execute("select user_id from [dbo].[User] where email='{}' and password='{}'".format(data["email"], data["password"]))
             user_id = cursor.fetchall()[0][0]
 
+            cursor.execute("insert into [dbo].[Activities](user_id, activities) values ('{}', '{}')".format(user_id, data["activity"]))
+            conn.commit()
+
             print("user_id: ")
             print(user_id)
 
@@ -48,8 +52,12 @@ def user_info():
                         print(j, 8+i)
                         cursor.execute("insert into [dbo].[Schedule](user_id, day_of_week, block_time) values ('{}', '{}', '{}')".format(user_id, j, 8+i))
                         conn.commit()
+    run_algo()
 
     return ('', 204)
+
+def run_algo():
+    return schedule_algo.main()
 
 @app.route('/_login_info', methods=['POST'])
 def login_info():    

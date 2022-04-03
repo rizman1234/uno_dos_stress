@@ -105,6 +105,19 @@ img {
 
                     <hr class="my-4" />
 
+                    <div class="form-group col-md-6">
+                        <label >Select activities below</label>
+                        <select id="activities">
+                            <option value="Racquetball">Racquetball</option>
+                            <option value="Soccer">Soccer</option>
+                            <option value="Basketball">Basketball</option>
+                            <option value="Football">Football</option>
+                            <option value="Lacrosse">Lacrosse</option>
+                        </select>
+                    </div>
+
+                    <br>
+
                     <div class="row mb-4 text-lg-center">
                         <p>Select your availability below.</p>
                         <div class="col-12">
@@ -127,12 +140,12 @@ img {
         var ln = $("#lastname").val();
         var em = $("#inputEmail").val();
         var pass = $("#inputPassword").val();
-        console.log(fn);
+        var act = $('#activities').val();
         $.ajax({
         type: "POST",
         url: "{{ url_for('user_info') }}",
         contentType: "application/json",
-        data: JSON.stringify({first_name: fn, last_name: ln, email: em, password: pass, availability: availability}),
+        data: JSON.stringify({first_name: fn, last_name: ln, email: em, password: pass, availability: availability, activity: act}),
         dataType: "json"
         });
     }
